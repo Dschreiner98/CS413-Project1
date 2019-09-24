@@ -17,19 +17,19 @@ var time = 30;
 
 
 //Game over text
-gameOver = new PIXI.Text("GAME OVER");
+gameOver = new PIXI.Text("GAME OVER \nThe Ghost hunters\ngot you!");
 gameOver.x = 120;
 gameOver.y = 150;
 
 //You win text
 youWin = new PIXI.Text("You Win!!!");
-youWin.x = 120;
+youWin.x = 145;
 youWin.y = 150;
 
 //play again prompt
 restart = new PIXI.Text("Play Again?\n(Click Here)");
 restart.x = 135;
-restart.y = 230;
+restart.y = 250;
 restart.interactive = true;
 restart.click = function(e)
 {
@@ -55,31 +55,43 @@ stage.addChild(player);
 //HOuse creation for game
 var houseTexture = PIXI.Texture.from("House.png");
 
+var houses = [];
 var house = new PIXI.Sprite(houseTexture);
+houses.push(house);
 var house1 = new PIXI.Sprite(houseTexture);
+houses.push(house1);
 var house2 = new PIXI.Sprite(houseTexture);
+houses.push(house2);
 var house3 = new PIXI.Sprite(houseTexture);
+houses.push(house3);
 var house4 = new PIXI.Sprite(houseTexture);
+houses.push(house4);
 
 house.position.x = 350;
 house.position.y = 350;
 stage.addChild(house);
 
 house1.position.x = 100;
-house1.position.y = 100;
+house1.position.y = 300;
 stage.addChild(house1);
 
 house2.position.x = 300;
 house2.position.y = 50;
 stage.addChild(house2);
 
-house3.position.x = 250;
-house3.position.y = 350;
+house3.position.x = 50;
+house3.position.y = 50;
 stage.addChild(house3);
 
 house4.position.x = 50;
 house4.position.y = 150;
 stage.addChild(house4);
+
+//Light creation for game
+var lightTexture = PIXI.Texture.from("Light.png");
+
+var light = new PIXI.Sprite(lightTexture);
+
 
 
 //Used for keyboard input
@@ -107,8 +119,38 @@ document.addEventListener('keydown', keydownEventHandler);
 
 function animate()
 {
-    requestAnimationFrame(animate);
+    for(i = 0; i<5; i++)
+    {
+        var houseCoordinates = houses[i].getBounds();
+        var ghostBounds = player.getBounds();
+        
+        if((houseCoordinates.x + houseCoordinates.width/2) + houseCoordinates.width > (ghostBounds.x + ghostBounds.width/2) 
+        && (houseCoordinates.x + houseCoordinates.width/2) < (ghostBounds.x+ ghostBounds.width/2) + playerTexture.width 
+        && (houseCoordinates.y +houseCoordinates.height/2) + houseCoordinates.height > (ghostBounds.y + ghostBounds.height/2) 
+        && (houseCoordinates.y+houseCoordinates.height/2) < (ghostBounds.y + ghostBounds.height/2) + ghostBounds.height)
+        {
+            if(i == Math.floor(Math.random()*4))
+            {
+                stage.addChild(gameOver);
+                stage.addChild(restart);
+                playerScore.text = 0;
+                break;
+            }
+            else{
+                score += 1;
+                playerScore.text = score;
+            }
+           
+        }
+        if(score>1000)
+        {
+            stage.addChild(youWin);
+            stage.addChild(restart);
+        }
+
+    }
     renderer.render(stage);
+    requestAnimationFrame(animate);
 }
 
 animate();
