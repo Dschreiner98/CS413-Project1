@@ -116,9 +116,12 @@ function keydownEventHandler(e) {
 
 //Listens to the keyboard presses to move the player
 document.addEventListener('keydown', keydownEventHandler);
-
+var rand = Math.floor(Math.random()*4)
+console.log(rand);
 function animate()
 {
+    var playing = true;
+    
     for(i = 0; i<5; i++)
     {
         var houseCoordinates = houses[i].getBounds();
@@ -129,12 +132,12 @@ function animate()
         && (houseCoordinates.y +houseCoordinates.height/2) + houseCoordinates.height > (ghostBounds.y + ghostBounds.height/2) 
         && (houseCoordinates.y+houseCoordinates.height/2) < (ghostBounds.y + ghostBounds.height/2) + ghostBounds.height)
         {
-            if(i == Math.floor(Math.random()*4))
+            if(i == rand)
             {
                 stage.addChild(gameOver);
                 stage.addChild(restart);
                 playerScore.text = 0;
-                break;
+                
             }
             else{
                 score += 1;
@@ -142,15 +145,21 @@ function animate()
             }
            
         }
-        if(score>1000)
+        if(score>100)
         {
             stage.addChild(youWin);
             stage.addChild(restart);
+            
         }
 
     }
-    renderer.render(stage);
-    requestAnimationFrame(animate);
+    console.log(playing);
+    if(playing)
+    {
+        renderer.render(stage);
+        requestAnimationFrame(animate);
+    }
+
 }
 
 animate();
