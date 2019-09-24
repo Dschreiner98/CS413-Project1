@@ -8,10 +8,6 @@ var stage = new PIXI.Container();
 //Will be used to keep track of points
 //playerScore will be used to render the score in game
 var score = 0;
-playerScore = new PIXI.Text(score);
-playerScore.x = 350;
-playerScore.y = 20;
-stage.addChild(playerScore);
 
 var time = 30;
 
@@ -116,7 +112,7 @@ function keydownEventHandler(e) {
 
 //Listens to the keyboard presses to move the player
 document.addEventListener('keydown', keydownEventHandler);
-var rand = Math.floor(Math.random()*4)
+var rand = Math.floor(Math.random()*5)
 console.log(rand);
 function animate()
 {
@@ -136,16 +132,16 @@ function animate()
             {
                 stage.addChild(gameOver);
                 stage.addChild(restart);
-                playerScore.text = 0;
+                
                 
             }
             else{
                 score += 1;
-                playerScore.text = score;
+                
             }
            
         }
-        if(score>100)
+        if(score>1)
         {
             stage.addChild(youWin);
             stage.addChild(restart);
